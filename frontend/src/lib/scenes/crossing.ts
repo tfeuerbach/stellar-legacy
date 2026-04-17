@@ -8,6 +8,13 @@ function seededRandom(seed: number): () => number {
 	};
 }
 
+function stationSeed(code: string): number {
+	let h = 5381;
+	for (let i = 0; i < code.length; i++) h = ((h * 33) ^ code.charCodeAt(i)) >>> 0;
+	const u = (h % 100000) / 100000;
+	return u === 0 ? 0.5 : u;
+}
+
 const ROAD_WIDTH = 6;
 const GROUND_SIZE = 40;
 const CROSSWALK_STRIPE_W = 0.6;
@@ -42,6 +49,10 @@ let pedestrians: Pedestrian[] = [];
 let buildings: THREE.Mesh[] = [];
 let buildingBaseHeights: number[] = [];
 let buildingBounds: { minX: number; maxX: number; minZ: number; maxZ: number }[] = [];
+// per-station smooth transitions: each frame we lerp material color and scale
+// toward these targets so station switches don't snap.
+let buildingTargetColors: THREE.Color[] = [];
+let buildingTargetHeightMults: number[] = [];
 let rng: () => number;
 let targetCount = 50;
 let spawnIndex = 0;
@@ -195,6 +206,8 @@ function createBuildings(rand: () => number): void {
 	buildings = [];
 	buildingBaseHeights = [];
 	buildingBounds = [];
+	buildingTargetColors = [];
+	buildingTargetHeightMults = [];
 
 	const halfRoad = ROAD_WIDTH / 2;
 
@@ -223,6 +236,8 @@ function createBuildings(rand: () => number): void {
 			scene.add(mesh);
 			buildings.push(mesh);
 			buildingBaseHeights.push(baseH);
+			buildingTargetColors.push(new THREE.Color(color));
+			buildingTargetHeightMults.push(1);
 			buildingBounds.push({
 				minX: x - w / 2 - 0.3,
 				maxX: x + w / 2 + 0.3,
@@ -477,6 +492,11 @@ export function buildCrossingScene(): { scene: THREE.Scene; camera: THREE.Orthog
 	rng = seededRandom(0.5);
 	spawnIndex = 0;
 	cars = [];
+	buildings = [];
+	buildingBaseHeights = [];
+	buildingBounds = [];
+	buildingTargetColors = [];
+	buildingTargetHeightMults = [];
 
 	scene.add(createGround());
 	createBuildings(rng);
@@ -510,7 +530,15 @@ export function buildCrossingScene(): { scene: THREE.Scene; camera: THREE.Orthog
 export function updateCrossingScene(elapsed: number, seed: number, delta: number, rawCounts: number): void {
 	if (!scene) return;
 
-	const desired = Math.min(Math.max(Math.round(rawCounts), 5), MAX_PEDESTRIANS);
+	// Map raw_counts (cps) onto [MIN_PED, MAX_PEDESTRIANS] logarithmically so
+	// sparse stations (~20 cps) feel near-empty, mid-range (~100 cps) feel
+	// busy, and high-flux stations (>=2000 cps) saturate at a packed crowd.
+	const MIN_PED = 3;
+	const LOG_LOW = 1;   // log10(10)
+	const LOG_HIGH = 3.3; // ~log10(2000)
+	const t = (Math.log10(Math.max(1, rawCounts)) - LOG_LOW) / (LOG_HIGH - LOG_LOW);
+	const tClamped = Math.max(0, Math.min(1, t));
+	const desired = Math.round(MIN_PED + tClamped * (MAX_PEDESTRIANS - MIN_PED));
 	targetCount += (desired - targetCount) * 0.05;
 	const wantCount = Math.round(targetCount);
 
@@ -644,13 +672,18 @@ export function updateCrossingScene(elapsed: number, seed: number, delta: number
 		pedestrians.splice(pedestrians.indexOf(ped), 1);
 	}
 
-	// buildings breathe with seed
+	// buildings breathe with seed and smoothly morph toward the current station's
+	// target color/height multiplier (set in resetCrossing). Both use small lerp
+	// factors so station switches fade in over ~1-2s instead of snapping.
 	for (let i = 0; i < buildings.length; i++) {
-		const targetH = buildingBaseHeights[i] * (0.6 + seed * 0.8);
+		const stationMult = buildingTargetHeightMults[i];
+		const targetScale = (0.6 + seed * 0.8) * stationMult;
 		const mesh = buildings[i];
-		const currentH = mesh.scale.y;
-		mesh.scale.y = currentH + (targetH / buildingBaseHeights[i] - currentH) * 0.02;
+		mesh.scale.y += (targetScale - mesh.scale.y) * 0.02;
 		mesh.position.y = (buildingBaseHeights[i] * mesh.scale.y) / 2 + 0.15;
+
+		const mat = mesh.material as THREE.MeshStandardMaterial;
+		mat.color.lerp(buildingTargetColors[i], 0.03);
 	}
 
 	const lights = scene.children.filter((c): c is THREE.AmbientLight => c instanceof THREE.AmbientLight);
@@ -663,6 +696,25 @@ export function updateCrossingScene(elapsed: number, seed: number, delta: number
 	);
 	scene.background = skyColor;
 	if (scene.fog) (scene.fog as THREE.Fog).color.copy(skyColor);
+}
+
+export function resetCrossing(stationCode?: string): void {
+	if (!scene || buildings.length === 0) return;
+
+	// Keep geometry and buildings in place; only retarget color + height.
+	// The animation loop smoothly lerps toward these values each frame, so
+	// switching stations blends rather than snaps. Pedestrian count is driven
+	// by the new reading's rawCounts via the existing fade-in/out logic.
+	const seed = stationCode ? stationSeed(stationCode) : 0.5;
+	const stationRand = seededRandom(seed);
+
+	for (let i = 0; i < buildings.length; i++) {
+		const nextColor = BUILDING_COLORS[Math.floor(stationRand() * BUILDING_COLORS.length)];
+		buildingTargetColors[i].setHex(nextColor);
+		// per-building multiplier in [0.65, 1.35] so different stations produce
+		// different skylines without any single building stretching wildly.
+		buildingTargetHeightMults[i] = 0.65 + stationRand() * 0.7;
+	}
 }
 
 export function disposeCrossingScene(): void {
@@ -682,5 +734,7 @@ export function disposeCrossingScene(): void {
 	buildings = [];
 	buildingBaseHeights = [];
 	buildingBounds = [];
+	buildingTargetColors = [];
+	buildingTargetHeightMults = [];
 	cars = [];
 }

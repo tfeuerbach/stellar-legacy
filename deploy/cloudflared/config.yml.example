@@ -1,0 +1,18 @@
+# Copy to ~/.cloudflared/config.yml after creating the tunnel and replace TUNNEL_ID.
+# Run from repo: ./deploy/setup-cloudflared-tunnel.sh (see script for steps).
+#
+# tunnel: <uuid-from-cloudflared-tunnel-create>
+# credentials-file: /home/YOUR_USER/.cloudflared/<uuid>.json
+
+tunnel: TUNNEL_ID
+credentials-file: /home/tfeuerbach/.cloudflared/TUNNEL_ID.json
+
+ingress:
+  - hostname: stellar-legacy.tfeuerbach.dev
+    service: http://127.0.0.1:5173
+  - hostname: stellar-legacy-api.tfeuerbach.dev
+    service: http://127.0.0.1:3001
+  # WebSocket upgrades are handled automatically for this origin.
+  - hostname: stellar-legacy-voxel.tfeuerbach.dev
+    service: http://127.0.0.1:8081
+  - service: http_status:404

@@ -8,6 +8,14 @@ function seededRandom(seed: number): () => number {
 	};
 }
 
+function stationHueShift(code: string): number {
+	let h = 5381;
+	for (let i = 0; i < code.length; i++) h = ((h * 33) ^ code.charCodeAt(i)) >>> 0;
+	return (h % 1000) / 1000;
+}
+
+let stationTint = 0;
+
 const LANE_COUNT = 5;
 const LANE_WIDTH = 2.4;
 const TOTAL_WIDTH = LANE_COUNT * LANE_WIDTH;
@@ -176,7 +184,13 @@ function buildCorridor(): void {
 function neutronColor(seed: number): THREE.Color {
 	const cold = new THREE.Color(0x44ccff);
 	const hot = new THREE.Color(0xff3322);
-	return new THREE.Color().lerpColors(cold, hot, seed);
+	const base = new THREE.Color().lerpColors(cold, hot, seed);
+	if (stationTint === 0) return base;
+	const hsl = { h: 0, s: 0, l: 0 };
+	base.getHSL(hsl);
+	hsl.h = (hsl.h + stationTint * 0.35 + 1) % 1;
+	base.setHSL(hsl.h, hsl.s, hsl.l);
+	return base;
 }
 
 function spawnNeutron(seed: number, delta: number, pressure: number): void {
@@ -409,6 +423,31 @@ export function updateRunnerScene(elapsed: number, seed: number, delta: number, 
 	(playerMesh.material as THREE.MeshStandardMaterial).color.copy(pColor);
 	(playerMesh.material as THREE.MeshStandardMaterial).emissive.copy(pColor).multiplyScalar(0.3);
 	playerGlow.color.copy(pColor);
+}
+
+export function resetRunner(stationCode?: string): void {
+	if (!scene || !playerMesh) return;
+
+	for (const n of neutrons) {
+		n.mesh.geometry.dispose();
+		(n.mesh.material as THREE.Material).dispose();
+		(n.sprite.material as THREE.Material).dispose();
+		neutronGroup.remove(n.mesh);
+	}
+	neutrons = [];
+	neutronIndex = 0;
+	spawnAccum = 0;
+	survivalTime = 0;
+	dead = false;
+	deadTimer = 0;
+	dashTimer = 0;
+	dashCooldown = 0;
+	playerMesh.visible = true;
+	playerLane = 2;
+	playerX = laneToX(playerLane);
+	playerTargetX = playerX;
+	active = true;
+	stationTint = stationCode ? stationHueShift(stationCode) : 0;
 }
 
 export function disposeRunnerScene(): void {

@@ -16,6 +16,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
 
   poller:
     build: ./poller
@@ -46,7 +47,9 @@ services:
   minecraft:
     build: ./minecraft
     ports:
-      - "8080:8080"
+      # 8080 is often taken on dev machines; tunnel maps public hostname → this host port.
+      - "8081:8080"
+    restart: unless-stopped
 
   frontend:
     build:
@@ -64,6 +67,7 @@ services:
       PUBLIC_MC_URL: ${PUBLIC_MC_URL:-http://localhost:8080}
     ports:
       - "5173:5173"
+    restart: unless-stopped
 
 volumes:
   pgdata:

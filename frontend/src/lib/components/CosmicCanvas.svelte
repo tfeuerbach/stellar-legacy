@@ -8,8 +8,8 @@
 	import cosmicVert from '$lib/shaders/cosmic.vert?raw';
 	import cosmicFrag from '$lib/shaders/cosmic.frag?raw';
 
-	import { buildCrossingScene, updateCrossingScene, disposeCrossingScene } from '$lib/scenes/crossing';
-	import { buildRunnerScene, updateRunnerScene, disposeRunnerScene, attachRunnerInput, detachRunnerInput } from '$lib/scenes/runner';
+	import { buildCrossingScene, updateCrossingScene, disposeCrossingScene, resetCrossing } from '$lib/scenes/crossing';
+	import { buildRunnerScene, updateRunnerScene, disposeRunnerScene, attachRunnerInput, detachRunnerInput, resetRunner } from '$lib/scenes/runner';
 	import { buildPipesScene, updatePipesScene, disposePipesScene, resetPipes } from '$lib/scenes/pipes';
 	import { canvasRenderer, type ScreenshotContext } from '$lib/stores/screenshot';
 
@@ -61,6 +61,10 @@
 			voxelIframeSrc = buildVoxelUrl(seedSmooth, code);
 		} else if (activeMode === 'pipes') {
 			resetPipes(code);
+		} else if (activeMode === 'crossing') {
+			resetCrossing(code);
+		} else if (activeMode === 'runner') {
+			resetRunner(code);
 		}
 	});
 
@@ -170,10 +174,14 @@
 			const result = buildCrossingScene();
 			scene = result.scene;
 			camera = result.camera;
+			const code = get(currentStation);
+			if (code) resetCrossing(code);
 		} else if (activeMode === 'runner') {
 			const result = buildRunnerScene();
 			scene = result.scene;
 			camera = result.camera;
+			const code = get(currentStation);
+			if (code) resetRunner(code);
 		}
 	}
 

@@ -32,6 +32,12 @@ docker compose up --build
 
 Copy `.env.example` to `.env` for local dev. See `.env.production.example` for deployment.
 
+## Production (Docker + Cloudflare Tunnel)
+
+Use `.env.production.example` as the base for `.env` (HTTPS/WSS URLs for `tfeuerbach.dev`). Start the stack with `docker compose up -d --build`. The voxel app is published on host port **8081** (see `docker-compose.yml`) so it does not collide with other services using 8080.
+
+Install `cloudflared` (the repo assumes `~/.local/bin/cloudflared` from the [official release](https://github.com/cloudflare/cloudflared/releases)), then run `./deploy/setup-cloudflared-tunnel.sh` once. That performs `cloudflared tunnel login`, creates the `stellar-legacy` tunnel, writes `~/.cloudflared/config.yml`, and adds DNS for `stellar-legacy.tfeuerbach.dev`, `stellar-legacy-api.tfeuerbach.dev`, and `stellar-legacy-voxel.tfeuerbach.dev`. Enable the user service so the tunnel survives logouts: `systemctl --user enable --now cloudflared-stellar-legacy.service`. For the tunnel to start at boot before login, run `sudo loginctl enable-linger "$USER"` once.
+
 ## Dev
 
 ```bash
