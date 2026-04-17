@@ -4,6 +4,16 @@ Real-time cosmic ray visualizations driven by neutron monitor data.
 
 **[stellar-legacy.tfeuerbach.dev](https://stellar-legacy.tfeuerbach.dev)**
 
+![SvelteKit](https://img.shields.io/badge/SvelteKit-FF3E00?style=flat&logo=svelte&logoColor=white)
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=flat&logo=nestjs&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-000000?style=flat&logo=threedotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat&logo=postgresql&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)
+![WebSocket](https://img.shields.io/badge/WebSocket-010101?style=flat&logo=socketdotio&logoColor=white)
+![GLSL](https://img.shields.io/badge/GLSL-5586A4?style=flat&logo=opengl&logoColor=white)
+
 ## What this is
 
 Neutron monitors around the world count the secondary particles that cosmic rays leave behind when they hit the atmosphere. A Python poller pulls counts from the [NMDB](https://www.nmdb.eu) public feed every 5 minutes, normalizes them into a 0-1 seed, and stores the readings in Postgres. A NestJS backend serves the data over REST and WebSocket. A SvelteKit frontend turns the seed into GPU-driven visuals.
