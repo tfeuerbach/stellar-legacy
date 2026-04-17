@@ -1,0 +1,87 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Build output
+dist/
+build/
+.svelte-kit/
+dist-ssr/
+
+# Root static/ was a staging area — real assets live in frontend/static/
+/static/
+
+# Environment (real secrets; .env.example and .env.production.example are tracked as templates)
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Dead NestJS scaffold tests
+backend/test/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker volumes / runtime data
+/data/
+
+# Lock files are useful to track — keep them
+# (package-lock.json ensures reproducible builds)
+
+# Minecraft — ignore all upstream textures, then un-ignore only the ones we use
+minecraft/src/static/textures/
+!minecraft/src/static/textures/block/
+minecraft/src/static/textures/block/*
+!minecraft/src/static/textures/block/stone.png
+!minecraft/src/static/textures/block/coal_ore.png
+!minecraft/src/static/textures/block/iron_ore.png
+!minecraft/src/static/textures/block/grass_block_side.png
+!minecraft/src/static/textures/block/grass_top_green.png
+!minecraft/src/static/textures/block/dirt.png
+!minecraft/src/static/textures/block/oak_log.png
+!minecraft/src/static/textures/block/oak_log_top.png
+!minecraft/src/static/textures/block/oak_leaves.png
+!minecraft/src/static/textures/block/sand.png
+!minecraft/src/static/textures/block/oak_planks.png
+!minecraft/src/static/textures/block/diamond_block.png
+!minecraft/src/static/textures/block/quartz_block_side.png
+!minecraft/src/static/textures/block/glass.png
+!minecraft/src/static/textures/block/bedrock.png
+
+# Minecraft — unused audio (only hal3.ogg + block sounds are used)
+minecraft/src/audio/musics/calm*.ogg
+minecraft/src/audio/musics/hal1.ogg
+minecraft/src/audio/musics/hal2.ogg
+minecraft/src/audio/musics/hal4.ogg
+minecraft/src/audio/musics/piano*.ogg
+
+# Minecraft — dead code and upstream extras
+minecraft/src/control/worker/
+minecraft/src/static/mc-font-zh.ttf
+minecraft/src/static/github.svg
+minecraft/README_ZH.md
+minecraft/yarn.lock
+
+# Backend — default NestJS boilerplate readme
+backend/README.md
+
+# Poller — one-time utility scripts
+poller/scrape_credits.py
+
+# Misc
+*.local

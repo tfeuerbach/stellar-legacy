@@ -1,0 +1,43 @@
+:root {
+	--font-display: 'Instrument Serif', serif;
+	--font-mono: 'Space Mono', monospace;
+	--color-bg: #050508;
+	--color-surface: #0a0a10;
+	--color-text: #e8e6e1;
+	--color-text-muted: rgba(232, 230, 225, 0.45);
+	--color-accent: #7b8cde;
+	--color-accent-warm: #de9a7b;
+}
+
+*, *::before, *::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+	background: var(--color-bg);
+	color: var(--color-text);
+	font-family: var(--font-mono);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+a {
+	color: var(--color-accent);
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+button {
+	cursor: pointer;
+	border: none;
+	background: transparent;
+	color: inherit;
+	font-family: inherit;
+}
