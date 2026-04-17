@@ -2,6 +2,8 @@
 
 Real-time cosmic ray visualizations driven by neutron monitor data.
 
+**[stellar-legacy.tfeuerbach.dev](https://stellar-legacy.tfeuerbach.dev)**
+
 ## What this is
 
 Neutron monitors around the world count the secondary particles that cosmic rays leave behind when they hit the atmosphere. A Python poller pulls counts from the [NMDB](https://www.nmdb.eu) public feed every 5 minutes, normalizes them into a 0-1 seed, and stores the readings in Postgres. A NestJS backend serves the data over REST and WebSocket. A SvelteKit frontend turns the seed into GPU-driven visuals.
