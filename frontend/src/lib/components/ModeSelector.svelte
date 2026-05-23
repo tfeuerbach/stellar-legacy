@@ -31,6 +31,13 @@
 		border: 1px solid rgba(232, 230, 225, 0.08);
 		border-radius: 8px;
 		padding: 3px;
+		overflow-x: auto;
+		-webkit-overflow-scrolling: touch;
+		scrollbar-width: none;
+	}
+
+	.mode-selector::-webkit-scrollbar {
+		display: none;
 	}
 
 	.mode-btn {
@@ -41,6 +48,8 @@
 		letter-spacing: 0.05em;
 		color: var(--color-text-muted);
 		transition: all 0.2s ease;
+		white-space: nowrap;
+		flex-shrink: 0;
 	}
 
 	.mode-btn:hover {
@@ -50,5 +59,12 @@
 	.mode-btn.active {
 		color: var(--color-text);
 		background: rgba(232, 230, 225, 0.1);
+	}
+
+	@media (max-width: 640px) {
+		.mode-btn {
+			padding: 5px 10px;
+			font-size: 0.6rem;
+		}
 	}
 </style>

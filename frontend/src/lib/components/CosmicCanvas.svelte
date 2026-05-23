@@ -331,8 +331,15 @@
 		top: 0;
 		left: 0;
 		width: 100vw;
+		height: 100dvh;
 		height: 100vh;
 		z-index: 0;
+	}
+
+	@supports (height: 100dvh) {
+		.canvas-container {
+			height: 100dvh;
+		}
 	}
 
 	.cosmic-canvas.hidden {
@@ -348,8 +355,15 @@
 		top: 0;
 		left: 0;
 		width: 100vw;
+		height: 100dvh;
 		height: 100vh;
 		z-index: 0;
 		border: none;
+	}
+
+	@supports (height: 100dvh) {
+		.voxel-iframe {
+			height: 100dvh;
+		}
 	}
 </style>

@@ -647,14 +647,29 @@
 	}
 
 	@media (max-width: 600px) {
+		.archive-page {
+			padding: 60px 12px 40px;
+		}
+
+		.archive-title {
+			font-size: 1.8rem;
+		}
+
 		.table-header, .table-row {
 			grid-template-columns: 1fr 1fr 1fr;
 		}
+
 		.col-delta, .col-flag {
 			display: none;
 		}
+
 		.screenshot-card {
-			flex: 0 0 220px;
+			flex: 0 0 200px;
+		}
+
+		.lightbox-close {
+			top: 12px;
+			right: 14px;
 		}
 	}
 </style>

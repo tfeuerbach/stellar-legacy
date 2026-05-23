@@ -117,7 +117,8 @@
 		position: absolute;
 		top: calc(100% + 6px);
 		left: 0;
-		min-width: 280px;
+		min-width: min(280px, calc(100vw - 32px));
+		max-width: calc(100vw - 32px);
 		max-height: 320px;
 		overflow-y: auto;
 		background: rgba(10, 10, 16, 0.92);
@@ -174,5 +175,27 @@
 	.item-meta {
 		color: var(--color-text-muted);
 		font-size: 0.65rem;
+	}
+
+	@media (max-width: 640px) {
+		.selector-trigger {
+			padding: 8px 10px;
+			font-size: 0.65rem;
+			max-width: 55vw;
+		}
+
+		.station-name {
+			display: none;
+		}
+
+		.dropdown {
+			max-height: 60vh;
+		}
+
+		.item-name {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
 	}
 </style>

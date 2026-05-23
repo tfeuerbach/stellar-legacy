@@ -163,11 +163,18 @@
 	.bottom-tools {
 		position: fixed;
 		bottom: 130px;
-		left: 20px;
+		left: 16px;
 		z-index: 60;
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
+	}
+
+	@media (max-width: 640px) {
+		.bottom-tools {
+			bottom: 80px;
+			left: 10px;
+		}
 	}
 
 	.stream-btn {

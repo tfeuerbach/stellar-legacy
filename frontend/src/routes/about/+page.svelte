@@ -18,135 +18,108 @@
 		<h1>Stellar Legacy</h1>
 
 		<section class="intro">
-			<blockquote class="epigraph">
-				"We are the cosmos made conscious and life is the means by which the universe understands itself."
-				<cite>Brian Cox</cite>
-			</blockquote>
 			<p>
-				Neutron monitors around the world count the particles that cosmic rays leave behind
-				when they slam into our atmosphere. Every five minutes, stations in Finland, Switzerland,
-				the South Pole and elsewhere report how many they counted. Stellar Legacy takes those
-				raw numbers and turns them into visuals. A star exploded millions of years ago, the
-				debris eventually reached Earth, a detector counted it, and now that count is driving
-				a shader on your screen.
+				There are neutron monitors all over the world that count particles from cosmic rays
+				hitting the atmosphere. They report numbers every five minutes. This site takes those
+				numbers and uses them to generate visuals.
 			</p>
 			<p>
-				There's no practical reason for any of this. It just turns out you can take the literal
-				aftermath of a supernova and compress it into a single floating point number between 0
-				and 1. That number seeds everything you see here. Every frame is shaped by particles
-				older than the Earth.
+				The numbers come from real detectors in real places (Finland, Switzerland, South Pole,
+				etc). They're not random, not simulated. The count rate at a given station at a given
+				moment becomes a seed value between 0 and 1, and that seed drives everything you see.
 			</p>
 			<p>
-				Nothing here is random or simulated. It's a deterministic reflection of what's actually
-				happening right now, measured by real instruments, run through some math, and put on
-				your screen.
+				There's no real practical purpose here. It's just a cool thing that works: ancient
+				supernova debris hits a detector, the detector reports a number, and that number
+				ends up controlling what your GPU renders.
 			</p>
 		</section>
 
 		<section>
 			<h2>What the stations measure</h2>
 			<p>
-				Cosmic rays are high energy particles (mostly protons) that come from supernova remnants,
-				active galactic nuclei, and other violent stuff far outside the solar system. They travel
-				at close to the speed of light for millions of years before they get here.
+				Cosmic rays are mostly protons from supernovae and other high energy events outside
+				the solar system. When one of them hits the upper atmosphere it triggers a shower of
+				secondary particles, including neutrons that make it all the way to ground level.
 			</p>
 			<p>
-				When one hits the upper atmosphere (about 15 km up), it collides with nitrogen and oxygen
-				and kicks off a cascade of secondary particles: pions, muons, and neutrons. Those
-				neutrons make it down to ground level, and that's what the stations count.
-			</p>
-			<p>
-				A <strong>neutron monitor</strong> is basically a set of proportional counters filled
-				with boron trifluoride or helium-3 gas, wrapped in polyethylene. A neutron enters the
-				tube, reacts with the gas, produces an electrical pulse. The station tallies those
-				pulses. That's the raw number: <strong>counts per second</strong>.
+				A neutron monitor is a gas-filled tube (boron trifluoride or helium-3) that produces
+				an electrical pulse when a neutron passes through it. Count those pulses and you get
+				<strong>counts per second</strong>, which is the raw measurement this whole site is
+				built on.
 			</p>
 		</section>
 
 		<section>
 			<h2>What the numbers mean</h2>
 			<p>
-				Oulu (Finland) typically reads around <strong>85 to 110 counts/s</strong>.
-				Jungfraujoch (Swiss Alps, 3570m) sees <strong>300 to 380 counts/s</strong> because
-				it's higher up with less atmosphere absorbing the cascade. South Pole sits around
-				<strong>240 to 295 counts/s</strong>. Mexico City only sees <strong>195 to 245 counts/s</strong>
-				despite being at 2274m because it has a strong geomagnetic shield (8.28 GV).
+				Different stations see very different count rates depending on altitude and location.
+				Oulu in Finland reads about 85 to 110 counts/s. Jungfraujoch in the Swiss Alps (3570m up)
+				gets 300 to 380 because there's less atmosphere above it. South Pole is around 240 to 295.
+				Mexico City only gets 195 to 245 even at 2274m because Earth's magnetic field is
+				stronger near the equator and blocks more of the incoming particles.
 			</p>
 			<p>
-				The count rate moves around for a few reasons:
+				The GV number next to each station in the selector is the geomagnetic cutoff rigidity,
+				basically how much shielding that location has. Low GV (like South Pole at 0.1) means
+				almost everything gets through. High GV (Mexico City at 8.28) means only the most
+				energetic rays make it.
+			</p>
+			<p>
+				Things that change the count rate:
 			</p>
 			<ul>
-				<li><strong>Solar activity.</strong> The Sun's magnetic field controls how many cosmic rays
-					reach Earth. During solar maximum the heliosphere puffs up and blocks more incoming
-					particles, so counts <em>drop</em>. During solar minimum, more get through.
-				</li>
-				<li><strong>Forbush decreases.</strong> When a coronal mass ejection (CME) sweeps past Earth,
-					its shock front temporarily shields us. Counts can drop 5 to 15% in hours, then slowly
-					recover over days. These are the sharp dips you see in the data.
-				</li>
-				<li><strong>Geomagnetic cutoff rigidity.</strong> Measured in gigavolts (GV), this is
-					basically the minimum energy a cosmic ray needs to punch through Earth's magnetic field
-					at a given location. The field is strongest near the equator, so stations there have
-					high rigidity values. Mexico City at 8.28 GV blocks most low energy cosmic rays. Polar
-					stations like South Pole (0.1 GV) have almost no magnetic shielding and see nearly
-					everything. That's why different stations have wildly different baselines, and why
-					the GV value is shown next to each station in the selector. It tells you how exposed
-					that detector is.
-				</li>
-				<li><strong>Atmospheric pressure.</strong> More air above the detector means more neutrons
-					get absorbed on the way down. Stations correct for this but small fluctuations remain.
-				</li>
+				<li><strong>Solar activity.</strong> When the Sun is more active its magnetic field
+					blocks more cosmic rays from reaching us, so counts go down. When it's quieter,
+					more get through.</li>
+				<li><strong>Forbush decreases.</strong> A coronal mass ejection passes Earth and
+					temporarily shields us. Counts drop 5 to 15% in hours, then take days to recover.
+					These are the sharp dips in the data.</li>
+				<li><strong>Pressure.</strong> More air above the detector absorbs more neutrons.
+					Stations correct for this but there's still some noise.</li>
 			</ul>
 		</section>
 
 		<section>
 			<h2>Reading spikes and dips</h2>
 			<p>
-				Most of the time a station's count rate barely moves. A fraction of a percent between
-				readings. When something bigger happens, there's usually a real physical reason.
+				Usually the numbers barely change between readings. When they do move significantly,
+				here's what's probably going on:
 			</p>
 
 			<div class="mode-desc">
-				<h3>Sudden dip (counts drop 5 to 15%)</h3>
+				<h3>Sudden dip (5 to 15% drop)</h3>
 				<p>
-					Almost always a <strong>Forbush decrease</strong>. A coronal mass ejection (basically a
-					billion ton cloud of magnetized solar plasma) just swept past Earth. Its magnetic field
-					deflects incoming cosmic rays so fewer reach the atmosphere and the neutron count drops.
-					It happens fast (hours) but recovery is slow (days to a week). Visually the seed drops
-					toward 0 and the render goes quiet. If you see the delta go negative across multiple
-					stations at once, a solar storm just hit.
+					A coronal mass ejection just passed Earth. Its magnetic field blocks incoming
+					cosmic rays for a while. Drops fast, recovers slow (days). If multiple stations
+					dip at the same time, that's confirmation. On this site the seed drops toward 0
+					and things get quiet.
 				</p>
 			</div>
 
 			<div class="mode-desc">
-				<h3>Sudden spike (counts jump sharply)</h3>
+				<h3>Sudden spike</h3>
 				<p>
-					Rare. This can mean a <strong>Ground Level Enhancement (GLE)</strong> where solar
-					energetic particles from a major flare are intense enough to produce their own neutrons
-					in the atmosphere on top of the normal cosmic ray background. GLEs happen maybe a dozen
-					times per solar cycle. If the spike shows up at polar stations first and barely registers
-					at equatorial ones, it's almost certainly solar particles riding the magnetic field lines
-					to the poles. The seed jumps toward 1 and the render lights up.
+					Rare. Usually a Ground Level Enhancement (GLE) where solar particles from a big
+					flare are energetic enough to produce extra neutrons on their own. If polar stations
+					spike first and equatorial ones don't react much, it's solar particles following
+					field lines to the poles.
 				</p>
 			</div>
 
 			<div class="mode-desc">
-				<h3>Gradual rise over months</h3>
+				<h3>Slow rise over months</h3>
 				<p>
-					That's the solar cycle. As the Sun moves from maximum toward minimum activity, its
-					magnetic field weakens and more galactic cosmic rays get through. Count rates climb
-					slowly over years. The historical min/max range expands to keep up so the seed stays
-					centered instead of getting stuck at 1.
+					The Sun getting quieter (moving toward solar minimum). Its weaker field lets more
+					cosmic rays through. The historical range expands over time to account for this.
 				</p>
 			</div>
 
 			<div class="mode-desc">
-				<h3>Single station glitch</h3>
+				<h3>One station acting weird</h3>
 				<p>
-					If one station spikes while everything else is flat, it's probably a detector issue.
-					Power glitch, malfunction, local interference. The poller flags anything more than 3
-					standard deviations off the poll's mean as anomalous. They still get stored but are
-					marked so they can be filtered out.
+					Probably hardware. If every other station is flat and one spikes, it's flagged as
+					anomalous (more than 3 sigma from the poll mean). Still stored, just marked.
 				</p>
 			</div>
 		</section>
@@ -154,118 +127,85 @@
 		<section>
 			<h2>From counts to seed</h2>
 			<p>
-				Each station's count rate gets normalized against its own historical range. Simple
-				min-max normalization:
+				We normalize each station's count rate against its own historical min and max:
 			</p>
-			<pre class="formula">seed = (counts - station_min) / (station_max - station_min)</pre>
+			<pre class="formula">seed = (counts - min) / (max - min)</pre>
 			<p>
-				The result gets clamped to [0, 1]. A reading at the station's all time low gives you
-				<code>seed = 0.0</code>. At its all time high, <code>seed = 1.0</code>. The range
-				expands automatically whenever a new extreme is observed.
+				So 0 means the station is at its lowest ever, 1 means its highest ever. The range
+				grows automatically when new extremes show up.
 			</p>
-			<p>Say Oulu is reading 92.06 counts/s with a historical range of 85 to 104:</p>
-			<pre class="formula">raw = 92.06 counts/s
-min = 85.00, max = 103.89
-
-seed = (92.06 - 85.00) / (103.89 - 85.00)
-     = 7.06 / 18.89
-     ≈ 0.374</pre>
+			<p>Example with Oulu reading 92.06 counts/s (historical range 85 to 104):</p>
+			<pre class="formula">(92.06 - 85.00) / (103.89 - 85.00) = 7.06 / 18.89 ≈ 0.374</pre>
 			<p>
-				The actual seed for each station updates live every five minutes. You can see the
-				current value in the data overlay on the home page.
+				There's also a <strong>delta</strong> value which is just current seed minus previous
+				seed. Bigger delta means something changed fast, so the visuals react with more
+				movement.
 			</p>
-			<p>
-				We also track <strong>flux delta</strong>, which is just the difference between the
-				current seed and the previous one. This drives animation speed and turbulence. A big
-				jump means something changed fast (maybe a Forbush decrease, maybe a data glitch) so
-				the visualization reacts with more motion.
-			</p>
-			<pre class="formula">delta = current_seed - previous_seed</pre>
 		</section>
 
 		<section>
-			<h2>The five modes</h2>
-			<p>
-				The seed, delta, and station identity all feed into five visualization modes running
-				on your GPU:
-			</p>
+			<h2>Modes</h2>
 
 			<div class="mode-desc">
 				<h3>Noise</h3>
 				<p>
-					Blends white noise (static grain) with curl noise (smooth fluid motion). The seed
-					controls the mix. Low seed gives you cold, grainy static. High seed pushes toward warm,
-					organic flow. Each station gets a unique hue rotation based on its code, so Oulu looks
-					completely different from Jungfraujoch even at the same seed value. Switching stations
-					pans smoothly through the noise field and transitions the color palette.
+					GLSL shader that mixes static grain and smooth curl noise based on the seed.
+					Low seed = grainy and cold, high seed = warm and flowing. Each station has its
+					own color palette so they look distinct even at similar values.
 				</p>
 			</div>
 
 			<div class="mode-desc">
 				<h3>Pipes</h3>
 				<p>
-					The classic Windows 3D Pipes screensaver but driven by cosmic data. Metallic pipes grow
-					through space making 90 degree turns. Each station gets its own color palette (complementary,
-					triadic, analogous, or wide spectrum) picked by hashing the station code. Higher flux means
-					more pipes moving faster. Lower flux means fewer, slower pipes. The whole scene clears and
-					regrows every 60 seconds. Switching stations resets everything with new colors.
+					3D pipes growing through space, like the old Windows screensaver. Colors come from
+					hashing the station code into a palette scheme. More flux = more pipes, faster.
+					Clears itself every 60 seconds.
 				</p>
 			</div>
 
 			<div class="mode-desc">
 				<h3>Crossing</h3>
 				<p>
-					A top down pedestrian intersection. Each figure represents a detected neutron. The raw
-					count rate sets the crowd size, so a Forbush decrease clears the streets and a GLE floods
-					them. Seed controls walk speed and outfit colors. Delta makes people drift around more
-					erratically.
+					Top-down pedestrian intersection. Number of people on screen matches the raw count
+					rate. Higher counts = busier streets. Delta makes the crowd move more erratically.
 				</p>
 			</div>
 
 			<div class="mode-desc">
 				<h3>Runner</h3>
 				<p>
-					A playable dodge game. Glowing neutron particles fly at you down a corridor and you
-					use A/D to switch lanes and SPACE to dash. The count rate controls how many particles
-					spawn and how fast they move. Jungfraujoch is way harder to survive than a quiet
-					equatorial station. Your survival time is your score.
+					Playable. Neutron particles fly at you and you dodge with A/D and SPACE. Count rate
+					sets spawn rate and speed. High-flux stations are harder. Score is survival time.
 				</p>
 			</div>
 
 			<div class="mode-desc">
 				<h3>Voxel</h3>
 				<p>
-					A Minecraft style world generated entirely from cosmic data. The station code scrambles
-					the Perlin noise permutation table so APTY produces a completely different landscape
-					than OULU. Height, tree density, stone prevalence, and sea level all vary per station.
-					You can walk around, place and break blocks, and explore a world that only exists
-					because of the cosmic rays hitting that specific detector.
+					Minecraft-style world where the station code scrambles the terrain noise. Each station
+					produces a different landscape. You can walk around, break and place blocks. Built on
+					<a href="https://github.com/vyse12138/minecraft-threejs" target="_blank" rel="noopener">minecraft-threejs</a>.
 				</p>
 			</div>
 		</section>
 
 		<section>
-			<h2>How it works</h2>
-			<ol>
-				<li>Every 5 minutes the poller grabs <code>www.nmdb.eu/rt/realtime.txt</code>, a plaintext
-					feed of every active neutron monitor.</li>
-				<li>For each station we track, it takes the latest count rate, checks for outliers (3 sigma
-					from the poll mean), normalizes it, computes delta, and writes everything to Postgres.</li>
-				<li>Postgres fires a <code>NOTIFY</code>. The backend picks it up and pushes the new reading
-					over WebSocket to anyone watching.</li>
-				<li>The frontend smoothly interpolates toward the new values (2% per frame for flux, 6% per
-					frame for station panning and color) so everything drifts instead of snapping.</li>
-				<li>When new data comes in, the frontend renders the noise visualization for every station
-					and saves a screenshot. These build up a rolling 24 hour visual record.</li>
-			</ol>
+			<h2>Pipeline</h2>
+			<p>
+				Python poller hits <code>nmdb.eu/rt/realtime.txt</code> every 5 minutes, normalizes
+				the counts, writes to Postgres. Postgres notifies the NestJS backend over a trigger,
+				backend pushes to connected browsers via WebSocket. Frontend interpolates toward the
+				new values so transitions are smooth, and captures a noise-mode screenshot for each
+				station into a rolling 24-hour archive.
+			</p>
 		</section>
 
 		<section>
 			<h2>Credits</h2>
 			<p>
-				Data from the <a href="https://www.nmdb.eu" target="_blank" rel="noopener">Neutron Monitor Database (NMDB)</a>,
-				funded under the EU FP7 programme (contract no. 213007). Individual stations are credited
-				to the institutions that run them. You can see the credit watermark on each visualization.
+				Data from <a href="https://www.nmdb.eu" target="_blank" rel="noopener">NMDB</a>
+				(EU FP7, contract 213007). Station credits are shown on each visualization.
 			</p>
 		</section>
 	</article>
@@ -423,5 +363,43 @@ seed = (92.06 - 85.00) / (103.89 - 85.00)
 
 	.mode-desc p {
 		margin-bottom: 0;
+	}
+
+	@media (max-width: 640px) {
+		.about-page {
+			padding: 60px 16px 80px;
+		}
+
+		h1 {
+			font-size: 1.8rem;
+			margin-bottom: 24px;
+		}
+
+		h2 {
+			font-size: 1.05rem;
+		}
+
+		.intro {
+			margin-bottom: 40px;
+			padding-bottom: 32px;
+		}
+
+		.epigraph {
+			font-size: 1rem;
+			padding-left: 14px;
+		}
+
+		section {
+			margin-bottom: 36px;
+		}
+
+		.formula {
+			font-size: 0.58rem;
+			padding: 10px 12px;
+		}
+
+		.mode-desc {
+			padding: 10px 12px;
+		}
 	}
 </style>

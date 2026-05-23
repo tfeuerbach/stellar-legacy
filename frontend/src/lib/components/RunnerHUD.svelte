@@ -101,4 +101,14 @@
 	.hint.fade {
 		opacity: 0;
 	}
+
+	@media (max-width: 640px) {
+		.runner-hud {
+			top: 70px;
+		}
+
+		.hint {
+			font-size: 0.55rem;
+		}
+	}
 </style>
