@@ -13,10 +13,10 @@
 	.credits-watermark {
 		position: fixed;
 		bottom: 16px;
-		right: 20px;
+		right: 16px;
 		z-index: 50;
 		text-align: right;
-		max-width: 380px;
+		max-width: min(380px, calc(100vw - 32px));
 		pointer-events: none;
 		user-select: none;
 	}
@@ -36,5 +36,21 @@
 		line-height: 1.5;
 		margin-top: 2px;
 		letter-spacing: 0.02em;
+	}
+
+	@media (max-width: 640px) {
+		.credits-watermark {
+			bottom: 8px;
+			right: 10px;
+			max-width: 60vw;
+		}
+
+		.station-credit {
+			font-size: 0.5rem;
+		}
+
+		.nmdb-credit {
+			font-size: 0.45rem;
+		}
 	}
 </style>

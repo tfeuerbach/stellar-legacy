@@ -123,7 +123,7 @@ world is deterministic per (seed, station) pair`
 		position: absolute;
 		bottom: calc(100% + 10px);
 		left: 0;
-		width: 340px;
+		width: min(340px, calc(100vw - 32px));
 		background: rgba(8, 8, 14, 0.94);
 		backdrop-filter: blur(16px);
 		border: 1px solid rgba(232, 230, 225, 0.1);

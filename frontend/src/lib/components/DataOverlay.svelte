@@ -109,13 +109,14 @@
 	.data-overlay {
 		position: fixed;
 		bottom: 20px;
-		left: 20px;
+		left: 16px;
 		z-index: 50;
 		font-family: var(--font-mono);
 		font-size: 0.65rem;
 		color: rgba(232, 230, 225, 0.4);
 		pointer-events: auto;
 		user-select: none;
+		max-width: calc(100vw - 32px);
 	}
 
 	.connection-dot {
@@ -154,7 +155,7 @@
 		position: absolute;
 		bottom: calc(100% + 8px);
 		left: 0;
-		width: 260px;
+		width: min(260px, calc(100vw - 48px));
 		padding: 10px 12px;
 		background: rgba(8, 8, 14, 0.95);
 		backdrop-filter: blur(14px);
@@ -202,5 +203,17 @@
 
 	.timestamp.playing {
 		color: rgba(123, 140, 222, 0.5);
+	}
+
+	@media (max-width: 640px) {
+		.data-overlay {
+			bottom: 12px;
+			left: 10px;
+			font-size: 0.6rem;
+		}
+
+		.timestamp {
+			font-size: 0.5rem;
+		}
 	}
 </style>
